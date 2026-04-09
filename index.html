@@ -3,102 +3,154 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Florența MAX</title>
+<title>Florența ULTRA</title>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 
 <style>
-body { margin:0; font-family: sans-serif; background:#111; color:#eee; }
-header { background:#8B0000; padding:10px; text-align:center; }
+body { margin:0; font-family:sans-serif; background:#111; color:#eee; }
+header { background:#8B0000; padding:10px; text-align:center; position:sticky; top:0; }
+
 button { margin:5px; padding:8px; border:none; border-radius:8px; }
 
-#map { height:250px; }
+#map { height:260px; }
 
-.day { padding:10px; }
+.day { padding:12px; border-bottom:1px solid #333; }
 
-.progress { height:5px; background:#333; }
+h3 { color:#ffcccb; }
+
+.poi { margin:6px 0; }
+
+.progress { height:5px; background:#333; border-radius:5px; }
 .bar { height:100%; background:#00ff88; width:0%; }
 
-.poi { margin:5px 0; }
+.meta { font-size:12px; color:#aaa; margin-left:20px; }
+.food { color:#2ecc71; }
+.kid { color:#4aa3ff; }
 </style>
 </head>
 
 <body>
 
 <header>
-Florența MAX 👶🔥
+Florența ULTRA 👶🔥  
 <br>
-<button onclick="locate()">📍 Locate me</button>
+<button onclick="locate()">📍 Eu</button>
 <button onclick="nextSpot()">🎯 Next</button>
 </header>
 
 <div id="map"></div>
 
+<!-- DAY 1 -->
 <div class="day">
-<h3>Day 1</h3>
+<h3>Day 1 – Centru</h3>
 <div class="progress"><div class="bar"></div></div>
 
-<div class="poi"><input type="checkbox"> Duomo</div>
-<div class="poi"><input type="checkbox"> Baptisteriu</div>
-<div class="poi"><input type="checkbox"> Giotto Tower</div>
+<div class="poi"><input type="checkbox" data-lat="43.7731" data-lng="11.2560"> Duomo</div>
+<div class="poi"><input type="checkbox" data-lat="43.7733" data-lng="11.2556"> Baptisteriu</div>
+<div class="poi"><input type="checkbox" data-lat="43.7730" data-lng="11.2550"> Giotto Tower</div>
+<div class="poi"><input type="checkbox" data-lat="43.7745" data-lng="11.2530"> Laurenziana</div>
+<div class="poi"><input type="checkbox" data-lat="43.7750" data-lng="11.2531"> San Lorenzo</div>
+<div class="poi"><input type="checkbox" data-lat="43.7752" data-lng="11.2533"> Medici Chapels</div>
+
+<div class="meta food">🍝 ZaZa • Bacco Matto • Ditta Artigianale</div>
+<div class="meta kid">👶 pauză ușoară în piață</div>
+</div>
+
+<!-- DAY 2 -->
+<div class="day">
+<h3>Day 2 – Arno</h3>
+<div class="progress"><div class="bar"></div></div>
+
+<div class="poi"><input type="checkbox" data-lat="43.7687" data-lng="11.2531"> Ponte Vecchio</div>
+<div class="poi"><input type="checkbox" data-lat="43.7696" data-lng="11.2558"> Signoria</div>
+<div class="poi"><input type="checkbox" data-lat="43.7696" data-lng="11.2560"> Palazzo Vecchio</div>
+<div class="poi"><input type="checkbox" data-lat="43.7687" data-lng="11.2550"> Uffizi</div>
+<div class="poi"><input type="checkbox" data-lat="43.7652" data-lng="11.2495"> Boboli</div>
+
+<div class="meta food">🍦 La Carraia • All’Antico Vinaio</div>
+<div class="meta kid">👶 spațiu mare de joacă</div>
+</div>
+
+<!-- DAY 3 -->
+<div class="day">
+<h3>Day 3 – View</h3>
+<div class="progress"><div class="bar"></div></div>
+
+<div class="poi"><input type="checkbox" data-lat="43.7680" data-lng="11.2620"> Santa Croce</div>
+<div class="poi"><input type="checkbox" data-lat="43.7682" data-lng="11.2622"> Pazzi</div>
+<div class="poi"><input type="checkbox" data-lat="43.7629" data-lng="11.2651"> Piazzale Michelangelo</div>
+<div class="poi"><input type="checkbox" data-lat="43.7605" data-lng="11.2655"> San Miniato</div>
+
+<div class="meta food">☕ Vivoli • Temakinho</div>
+<div class="meta kid">👶 urcare grea → pauze</div>
+</div>
+
+<!-- DAY 4 -->
+<div class="day">
+<h3>Day 4 – Artă</h3>
+<div class="progress"><div class="bar"></div></div>
+
+<div class="poi"><input type="checkbox" data-lat="43.7760" data-lng="11.2585"> Accademia</div>
+<div class="poi"><input type="checkbox" data-lat="43.7742" data-lng="11.2497"> Santa Maria Novella</div>
+<div class="poi"><input type="checkbox" data-lat="43.7765" data-lng="11.2610"> Annunziata</div>
+
+<div class="meta food">🥂 Rinascente • Student Hotel • Gilli • Da Michele</div>
+<div class="meta kid">👶 zi relax</div>
 </div>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <script>
-// MAP INIT
+// MAP
 let map = L.map('map').setView([43.773, 11.256], 14);
-
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-}).addTo(map);
-
-// POI LOCATIONS
-const spots = [
-{ name:"Duomo", lat:43.7731, lng:11.2560 },
-{ name:"Gelato La Carraia", lat:43.7695, lng:11.2472 }
-];
-
-// ADD MARKERS
-spots.forEach(s=>{
-    L.marker([s.lat,s.lng]).addTo(map).bindPopup(s.name);
-});
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
 let userMarker;
 
-// GEOLOCATION
+// MARKERS
+document.querySelectorAll("input").forEach(cb=>{
+let lat=cb.dataset.lat;
+let lng=cb.dataset.lng;
+if(lat){
+L.marker([lat,lng]).addTo(map).bindPopup(cb.parentElement.innerText);
+}
+});
+
+// GPS
 function locate(){
 navigator.geolocation.watchPosition(pos=>{
-    let lat=pos.coords.latitude;
-    let lng=pos.coords.longitude;
+let lat=pos.coords.latitude;
+let lng=pos.coords.longitude;
 
-    if(userMarker){ map.removeLayer(userMarker); }
+if(userMarker) map.removeLayer(userMarker);
 
-    userMarker = L.marker([lat,lng]).addTo(map)
-    .bindPopup("Tu ești aici").openPopup();
+userMarker = L.marker([lat,lng]).addTo(map).bindPopup("Tu ești aici").openPopup();
+map.setView([lat,lng],15);
 
-    map.setView([lat,lng],15);
-
-    checkNearby(lat,lng);
+checkNearby(lat,lng);
 });
 }
 
-// PROXIMITY ALERT
+// NEARBY ALERT
 function checkNearby(lat,lng){
-spots.forEach(s=>{
-let d = Math.sqrt((lat-s.lat)**2+(lng-s.lng)**2);
-if(d < 0.002){
-alert("Ești lângă " + s.name + " 🍦");
+document.querySelectorAll("input").forEach(cb=>{
+let d=Math.sqrt((lat-cb.dataset.lat)**2+(lng-cb.dataset.lng)**2);
+if(d<0.002 && !cb.checked){
+alert("Ești lângă: "+cb.parentElement.innerText+" 👀");
 }
 });
 }
 
-// NEXT SPOT NAV
+// NEXT SMART
 function nextSpot(){
-let next = spots[0];
-window.open(`https://www.google.com/maps/dir/?api=1&destination=${next.lat},${next.lng}`);
+let next=[...document.querySelectorAll("input")].find(cb=>!cb.checked);
+if(next){
+window.open(`https://www.google.com/maps/dir/?api=1&destination=${next.dataset.lat},${next.dataset.lng}`);
+}
 }
 
-// CHECKBOX SAVE + SCORE
+// SAVE + PROGRESS
 document.querySelectorAll("input").forEach((cb,i)=>{
 cb.checked = localStorage.getItem(i)=="true";
 cb.onchange=()=>{
@@ -108,9 +160,11 @@ update();
 });
 
 function update(){
-let c=document.querySelectorAll("input");
-let ch=document.querySelectorAll("input:checked");
-document.querySelector(".bar").style.width=(ch.length/c.length*100)+"%";
+document.querySelectorAll(".day").forEach(day=>{
+let c=day.querySelectorAll("input");
+let ch=day.querySelectorAll("input:checked");
+day.querySelector(".bar").style.width=(ch.length/c.length*100)+"%";
+});
 }
 update();
 
